@@ -11,7 +11,7 @@ import {HttpClientModule} from '@angular/common/http';
   declarations: [],
   imports: [
     NgxPermissionsModule.forRoot(),
-    AngularFireModule.initializeApp(environment.firebase, 'fungible'),
+    AngularFireModule.initializeApp(environment.firebase, 'angular8Coding'),
     AngularFireAuthModule,
     AngularFirestoreModule,
     HttpClientModule,
