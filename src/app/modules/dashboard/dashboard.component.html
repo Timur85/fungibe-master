@@ -1,0 +1,101 @@
+<div class="wrapper">
+  <mat-toolbar class="header d-flex">
+    <a class="header__logo ml-5" routerLink="/">
+      <img src="assets/images/logo.png" alt="">
+    </a>
+    <span class="w-100"></span>
+    <div class="account d-flex align-items-center mr-5"
+         *ngIf="user;else login">
+      <span class="account__name">{{user.fullName}}</span>
+      <button class="account__button" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>person_outline</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onSignOutClick()">Sign out</button>
+      </mat-menu>
+    </div>
+    <ng-template #login>
+      <div class="account d-flex align-items-center mr-5">
+        <button
+          class="account__button account__button--login"
+          mat-button routerLink="/login">
+          Sign In
+        </button>
+      </div>
+    </ng-template>
+  </mat-toolbar>
+  <main class="main d-flex flex-column">
+    <div class="comments-container">
+      <div class="scrollable">
+        <div class="d-flex flex-column comment"
+             *ngFor="let comment of comments$ | async; trackBy: trackByFn">
+          <div class="d-flex flex-column comment__header">
+            <h3 class="user-name">{{comment.userName}}<span
+              class="created-at">{{comment.createdAt | date:'short'}}</span>
+            </h3>
+          </div>
+          <div class="comment__content">
+            <p>
+              {{comment.comment}}
+            </p>
+            <div class="d-flex flex-column comment comment--replies"
+                 *ngFor="let reply of comment | replies | async">
+              <div class="d-flex flex-column comment__header">
+                <h3 class="user-name">{{reply.userName}}<span
+                  class="created-at">{{reply.createdAt | date:'short'}}</span>
+                </h3>
+              </div>
+              <div class="comment__content">
+                <p>{{reply.reply}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end comment__footer">
+            <ng-container *ngIf="!user || user.id!==comment.userId">
+              <button
+                class="mr-2"
+                mat-button color="primary"
+                (click)="onReplyClick(comment)">Reply
+              </button>
+              <button
+                mat-button color="warn" (click)="onSpanComment(comment)">Spam
+              </button>
+            </ng-container>
+            <button
+              *ngIf="user && user.id===comment.userId"
+              mat-button color="warn" (click)="onDeleteComment(comment)">Delete
+            </button>
+          </div>
+          <div class="d-flex flex-column comment__reply" *ngIf="comment.isReply">
+            <mat-form-field class="w-100" appearance="outline">
+              <textarea style="resize: none;"
+                        [(ngModel)]="comment.reply"
+                        matInput placeholder="Comment"></textarea>
+            </mat-form-field>
+            <div class="d-flex justify-content-end">
+              <button
+                class="mr-2"
+                mat-raised-button color="primary" (click)="onAddReplyClick(comment)">Reply
+              </button>
+              <button mat-raised-button color="warn" (click)="onCancelReplyClick(comment)">Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <mat-form-field class="w-100" appearance="outline">
+          <textarea
+            style="resize: none;"
+            [formControl]="commentControl"
+            matInput placeholder="Comment" rows="2"></textarea>
+        </mat-form-field>
+        <button
+          class="align-self-end"
+          [disabled]="commentControl.invalid"
+          mat-raised-button color="primary" (click)="onAddCommentClick()">Add comment
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

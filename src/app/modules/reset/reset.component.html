@@ -1,0 +1,29 @@
+<div class="wrapper d-flex">
+  <div class="wrapper__left d-flex flex-column w-100 h-100">
+    <form class="left__form d-flex flex-column" [formGroup]="formGroup" (ngSubmit)="onSubmitClick()">
+      <a class="logo align-self-start" routerLink="/">
+        <img src="assets/images/logo-gray.png" alt="">
+      </a>
+      <h3 class="heading">Forgot Password</h3>
+      <p class="mb-0">Please enter the email associate with your account.</p>
+      <p>We will send you a link to restore your password.</p>
+      <mat-form-field class="w-100" appearance="outline">
+        <input matInput type="email"
+               placeholder="Email" autocomplete="off" autocorrect="off"
+               formControlName="email">
+      </mat-form-field>
+      <p class="text-danger mb-0" *ngIf="errorMessage">{{errorMessage}}</p>
+      <button class="fun-button mb-4" type="submit"
+              mat-raised-button color="primary"
+              [disabled]="formGroup.invalid">Send
+      </button>
+      <div class="d-flex">
+        <span class="mr-2">Already have an account?</span><a class="link" routerLink="/login">Login!</a>
+      </div>
+    </form>
+  </div>
+  <div class="wrapper__right right">
+    <h3 class="heading heading--primary align-self-center">Let's get you back!</h3>
+    <img class="right__image" src="assets/images/programming.png" alt="">
+  </div>
+</div>
