@@ -32,6 +32,7 @@ export class AppModule implements DoBootstrap {
 
   async ngDoBootstrap(appRef: ApplicationRef): Promise<void> {
     await this._auth.getCurrentUser().pipe(first()).toPromise();
+
     appRef.bootstrap(AppComponent);
   }
 
